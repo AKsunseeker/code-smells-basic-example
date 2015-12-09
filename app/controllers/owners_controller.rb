@@ -4,18 +4,19 @@ class OwnersController < ApplicationController
   end
 
   def show
-    @onr = nil
-    @onr = Owner.find(params[:id])
-    return @onr if @onr
+    
+    @owner = Owner.find(params[:id])
+    
   end
 
   def update
     @owner = Owner.find_by(id: params[:id])
     if @owner.update(owner_params)
-      # redirect_to owners_path, success: "Owner with name #{params[:owner][:first_name]} #{params[:owner][:last_name]} was updated successfully"
+
+       redirect_to owners_path, success: "Owner with name #{params[:owner][:first_name]} #{params[:owner][:last_name]} was updated successfully"
     else
       flash[:error] = "Owner with name #{params[:owner][:first_name]} #{params[:owner][:last_name]} was not created successfully"
-      # render 'edit'
+      render 'edit'
     end
   end
 
@@ -33,7 +34,7 @@ class OwnersController < ApplicationController
   end
   
   def edit
-    @owner = Owner.find_by(name: params[:name])
+    @owner = Owner.find_by(params[:id])
   end
 
   def destroy
@@ -41,7 +42,7 @@ class OwnersController < ApplicationController
     message = nil
     success_message = ""
     error_message = ''
-    @onr = Owner.find(r)
+    @onr = Owner.find(params[:id])
     if @onr && @onr.persisted? && p
       #destroy all my cats
       @onr.cats.each do |cat|
